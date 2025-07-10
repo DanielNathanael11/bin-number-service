@@ -13,12 +13,11 @@ def load_data():
 @router.post("/lookup")
 def lookup_bin(bin: str):
     """
-    Accepts a single BIN number and returns its info with BIN as top-level key.
+    Accepts a single BIN number and returns only its metadata.
     """
     result = bin_cache.get_bin_info(bin)
     if result:
-        return {
-            bin: result  # BIN as top-level key
-        }
+        # Return only the metadata (no 'bin' field)
+        return result
     else:
         raise HTTPException(status_code=404, detail="BIN not found")
