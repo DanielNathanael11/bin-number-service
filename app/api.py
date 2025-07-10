@@ -11,16 +11,17 @@ def load_data():
     bin_cache.load()
 
 @router.post("/lookup")
-def lookup_bins(bins: list[str]):
+def lookup_bin(bin: str):
     """
-    Accepts a list of BIN numbers and returns their info.
+    Accepts a single BIN number and returns its info as a JSON object.
     """
-    results = []
-    for bin_number in bins:
-        info = bin_cache.get_bin_info(bin_number)
-        if info:
-            results.append({"bin": bin_number, **info})
-        else:
-            results.append({"bin": bin_number, "error": "BIN not found"})
-
-    return {"results": results}
+    result = bin_cache.get_bin_info(bin)
+    if result:
+        # Return the BIN info as a clean JSON object
+        return {
+            "bin": bin,
+            **result
+        }
+    else:
+        # Return 404 error if BIN not found
+        raise HTTPException(status_code=404, detail="BIN not found")
