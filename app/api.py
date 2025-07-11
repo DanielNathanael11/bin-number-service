@@ -3,8 +3,11 @@ from app.bin_data import BinDataCache
 
 router = APIRouter()
 
-# Shared BIN cache instance
-bin_cache = BinDataCache(csv_file="bin_data.csv")
+# CS bucket and file path
+bin_cache = BinDataCache(
+    gcs_bucket="harsya-data",
+    gcs_blob="card_bin_data.csv"
+)
 
 @router.on_event("startup")
 def load_data():
@@ -13,11 +16,10 @@ def load_data():
 @router.post("/lookup")
 def lookup_bin(bin: str):
     """
-    Accepts a single BIN number and returns only its metadata.
+    Accepts a single BIN number and returns its metadata as an object.
     """
     result = bin_cache.get_bin_info(bin)
     if result:
-        # Return only the metadata (no 'bin' field)
-        return result
+        return result  # Return only the metadata
     else:
         raise HTTPException(status_code=404, detail="BIN not found")
