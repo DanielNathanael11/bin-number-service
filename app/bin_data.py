@@ -1,7 +1,7 @@
 import pandas as pd
 
 import os
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:/Users/Paper/Downloads/data-team-production-e09c9a8d87e4.json"  # change this 
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "x"  # change this 
 
 from google.cloud import storage
 import io
